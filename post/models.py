@@ -8,6 +8,7 @@ class SkillSet(models.Model):
     class Meta:
         db_table = 'skill_sets'
 
+
 # "jobpostskillset_set"   JobPostSkillSet -> jobpostskillset_set
 class JobPostSkillSet(models.Model):
     skill_set = models.ForeignKey('SkillSet', on_delete=models.SET_NULL, null=True)
@@ -58,5 +59,5 @@ class BusinessArea(models.Model):
 
 class ApplyToJobPost(models.Model):
     user = models.ForeignKey('user.User', verbose_name="작성자", on_delete=models.SET_NULL, null=True)
-    jobpost =models.ForeignKey(JobPost, verbose_name="채용공고", on_delete=models.SET_NULL, null=True)
+    jobpost = models.ForeignKey(JobPost, verbose_name="채용공고", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField("지원 날", auto_now_add=True)

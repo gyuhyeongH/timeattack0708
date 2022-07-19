@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, status
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import (
     JobPostSkillSet,
@@ -8,6 +9,7 @@ from .models import (
     JobPost,
     Company
 )
+from .permissions import IsCandidateUser
 from .serializers import JobPostSerializer,ApplyToJobPostSerializer
 from django.db.models.query_utils import Q
 
@@ -70,7 +72,11 @@ class JobView(APIView):
 
 
 class ApplyView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsCandidateUser]
+
     def post(self, request):
+        request.data['user']=request.user.id
         apply_serializer = ApplyToJobPostSerializer(data=request.data)
         if apply_serializer.is_valid():
             apply_serializer.save()
